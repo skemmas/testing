@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>INFECTED.space Proxy Test</title>
+<title>INFECTED.space CORS TEST</title>
 
 <style>
 
@@ -86,7 +86,7 @@ body{
 <div id="terminal">
 
     <div class="title">
-        INFECTED.space • PROXY TEST
+        INFECTED.space • LIVE SIGNAL TEST
     </div>
 
 </div>
@@ -128,7 +128,7 @@ function print(text,cls=''){
 
 /*
 =========================================
-ENTITY PARSER
+ENTITY EXTRACTION
 =========================================
 */
 
@@ -174,7 +174,7 @@ function extractEntities(text){
 
 /*
 =========================================
-LOAD NEWS
+LOAD GNEWS
 =========================================
 */
 
@@ -183,33 +183,42 @@ async function loadNews(){
     try{
 
         print(
-            '[SYSTEM] CONNECTING TO GNEWS PROXY...'
+            '[SYSTEM] CONNECTING TO OUTBREAK GRID...',
+            'success'
         );
 
         const target =
 `https://gnews.io/api/v4/search?q=hantavirus OR outbreak OR epidemic OR virus&lang=en&max=10&apikey=${API_KEY}`;
 
         /*
-        PROXY
+        CORS.LOL PROXY
         */
 
         const proxy =
-`https://api.allorigins.win/raw?url=${encodeURIComponent(target)}`;
+`https://api.cors.lol/?url=${encodeURIComponent(target)}`;
 
         const response =
         await fetch(proxy);
 
-        const text =
-        await response.text();
+        const raw =
+        await response.json();
 
-        console.log(text);
+        console.log(raw);
 
         /*
-        JSON PARSE
+        CORS.LOL wraps response
         */
 
         const data =
-        JSON.parse(text);
+        raw.contents
+            ? JSON.parse(raw.contents)
+            : raw;
+
+        console.log(data);
+
+        /*
+        VALIDATE
+        */
 
         if(!data.articles){
 
@@ -219,7 +228,7 @@ async function loadNews(){
             );
 
             print(
-                text,
+                JSON.stringify(data),
                 'error'
             );
 
@@ -228,7 +237,12 @@ async function loadNews(){
         }
 
         print(
-            `[SYSTEM] ${data.totalArticles} SIGNALS DETECTED`,
+            `[SYSTEM] ${data.totalArticles} SIGNALS INDEXED`,
+            'success'
+        );
+
+        print(
+            '[SYSTEM] AI ENTITY EXTRACTION ACTIVE...',
             'success'
         );
 
@@ -284,7 +298,7 @@ async function loadNews(){
         });
 
         print(
-            '[SYSTEM] OUTBREAK GRID SYNCHRONIZED',
+            '[SYSTEM] OUTBREAK FEED SYNCHRONIZED',
             'success'
         );
 
